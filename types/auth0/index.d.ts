@@ -8,6 +8,7 @@
 //                 Anthony Messerschmidt <https://github.com/CatGuardian>
 //                 Johannes Schneider <https://github.com/neshanjo>
 //                 Meng Bernie Sung <https://github.com/MengRS>
+//                 Léo Haddad Carneiro <https://github.com/Scoup>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.8
 
@@ -378,6 +379,27 @@ export type ClientGrant = Partial<CreateClientGrant> & {
    */
   id?: string;
 };
+
+export interface GetClientGrantsOptions {
+  per_page?: number;
+  page?: number;
+  /**
+   * The audience.
+   */
+  audience?: string;
+  /**
+   * The id of the client (application).
+   */
+  client_id?: string;
+}
+
+export interface GetClientGrantsOptionsPaged extends GetClientGrantsOptions {
+  include_totals?: boolean;
+}
+
+export interface ClientGrantPage extends Page {
+  client_grants: ClientGrant[]
+}
 
 export interface CreateClientGrant {
   /**
@@ -928,6 +950,12 @@ export class ManagementClient<A=AppMetadata, U=UserMetadata> {
   // Client Grants
   getClientGrants(): Promise<ClientGrant[]>;
   getClientGrants(cb: (err: Error, data: ClientGrant[]) => void): void;
+
+  getClientGrants(params: GetClientGrantsOptions): Promise<ClientGrant[]>;
+  getClientGrants(params: GetClientGrantsOptions, cb: (err: Error, data: ClientGrant[]) => void): void;
+
+  getClientGrants(params: GetClientGrantsOptionsPaged): Promise<ClientGrantPage>;
+  getClientGrants(params: GetClientGrantsOptionsPaged, cb: (err: Error, data: ClientGrantPage) => void): void;
 
   createClientGrant(data: CreateClientGrant): Promise<ClientGrant>;
   createClientGrant(data: CreateClientGrant, cb: (err: Error, data: ClientGrant) => void): void;
